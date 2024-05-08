@@ -1,0 +1,3 @@
+"C:\Program Files\JetBrains\CLion 2024.1\bin\cmake\win\x64\bin\cmake.exe" -E rm -f CMakeFiles\Projeto_Arquivos_Sequenciais.dir/objects.a
+C:\PROGRA~1\JETBRA~1\CLION2~1.1\bin\mingw\bin\ar.exe qc CMakeFiles\Projeto_Arquivos_Sequenciais.dir/objects.a @CMakeFiles\Projeto_Arquivos_Sequenciais.dir\objects1.rsp
+C:\PROGRA~1\JETBRA~1\CLION2~1.1\bin\mingw\bin\G__~1.EXE -g -Wl,--whole-archive CMakeFiles\Projeto_Arquivos_Sequenciais.dir/objects.a -Wl,--no-whole-archive -o Projeto_Arquivos_Sequenciais.exe -Wl,--out-implib,libProjeto_Arquivos_Sequenciais.dll.a -Wl,--major-image-version,0,--minor-image-version,0 @CMakeFiles\Projeto_Arquivos_Sequenciais.dir\linkLibs.rsp
