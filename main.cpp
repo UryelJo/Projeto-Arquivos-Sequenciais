@@ -205,7 +205,7 @@ void textoFinal(){
 //Questão 1
 Cidade leituraDadosCidades( vector<Cidade>& cidades) {
     Cidade cidade{};
-    Cidade cidadeAux{};
+    Cidade cidadeAux = { 0, "", ""};
     system("cls");
     cout << "Informe o nome da cidade: " << endl;
     gets(cidade.nome);
@@ -228,7 +228,7 @@ Cidade leituraDadosCidades( vector<Cidade>& cidades) {
 }
 Especialidade leituraDadosEspecialidades( vector<Especialidade>& especialidades) {
     Especialidade especialidade{};
-    Especialidade especialidadeAux{};
+    Especialidade especialidadeAux = { 0, ""};
     system("cls");
     cout << "Informe a descricao da especialidade: " << endl;
     gets(especialidade.descricao);
@@ -247,7 +247,7 @@ Especialidade leituraDadosEspecialidades( vector<Especialidade>& especialidades)
 }
 Medicamento leituraDadosMedicamentos( vector<Medicamento>& medicamentos) {
     Medicamento medicamento{};
-    Medicamento medicamentoAux{};
+    Medicamento medicamentoAux = { 0, "", 0, 0, 0, 0.0};
     int quantidadeEstoque = 0;
     system("cls");
     cout << "Informe a descricao do medicamento: " << endl;
@@ -296,7 +296,7 @@ Medicamento leituraDadosMedicamentos( vector<Medicamento>& medicamentos) {
 }
 CID leituraDadosCid( vector<CID>& cids) {
     CID cid{};
-    CID cidAux{};
+    CID cidAux = { "",""};
     system("cls");
     cout << "Informe a descricao da CID: " << endl;
     gets(cid.descricao);
@@ -316,9 +316,9 @@ CID leituraDadosCid( vector<CID>& cids) {
 //Atividade 2
 Medico incluirNovoMedico(vector<Medico>& medicos,  vector<Especialidade>& especialidades,  vector<Cidade>& cidades) {
     Medico medico{};
-    Medico medicoAux{};
-    Especialidade especialidadeAux{ 0, ""};
-    Cidade cidadeAux{ 0, "", ""};
+    Medico medicoAux = { 0, "", 0, "", "", 0};
+    Especialidade especialidadeAux = { 0, ""};
+    Cidade cidadeAux = { 0, "", ""};
 
     int opcao = 0;
 
@@ -355,7 +355,7 @@ Medico incluirNovoMedico(vector<Medico>& medicos,  vector<Especialidade>& especi
         cin.ignore();
         especialidadeAux = buscarEspecialidade(especialidades, medico.codigo_especialidade);
         if(especialidadeAux.codigo == 0) {
-            cout << "!Especialidade nao encontrada!";
+            cout << "!Especialidade nao encontrada!" << endl;
             cout << "\nDeseja cadastrar uma nova especialidade?? [1 - Sim | 0 - Nao]: " << endl;
             cin >> opcao;
             cin.ignore();
@@ -368,7 +368,7 @@ Medico incluirNovoMedico(vector<Medico>& medicos,  vector<Especialidade>& especi
                 }
             }
         }
-    } while(especialidadeAux.codigo == 0 && opcao != 0);
+    } while(especialidadeAux.codigo == 0 && opcao == 0);
     opcao = 0;
 
     system("cls");
@@ -382,7 +382,7 @@ Medico incluirNovoMedico(vector<Medico>& medicos,  vector<Especialidade>& especi
         cin.ignore();
         cidadeAux = buscarCidade(cidades, medico.codigo_cidade);
         if(cidadeAux.codigo == 0) {
-            cout << "!Cidade nao encontrada!";
+            cout << "!Cidade nao encontrada!" << endl;
             cout << "\nDeseja cadastrar uma nova cidade?? [1 - Sim | 0 - Nao]: " << endl;
             cin >> opcao;
             cin.ignore();
@@ -395,7 +395,7 @@ Medico incluirNovoMedico(vector<Medico>& medicos,  vector<Especialidade>& especi
                 }
             }
         }
-    } while(cidadeAux.codigo == 0 && opcao != 0);
+    } while(cidadeAux.codigo == 0 && opcao == 0);
 
     return medico;
 }
@@ -403,8 +403,8 @@ Medico incluirNovoMedico(vector<Medico>& medicos,  vector<Especialidade>& especi
 //Atividade 3
 Paciente incluirNovoPaciente( vector<Paciente>& pacientes,  vector<Cidade>& cidades) {
     Paciente paciente{};
-    Paciente pacienteAux{};
-    Cidade cidadeAux{ 0, "", ""};
+    Paciente pacienteAux = { "", "", "", 0 };
+    Cidade cidadeAux = { 0, "", ""};
 
     int opcao = 0;
 
@@ -450,7 +450,7 @@ Paciente incluirNovoPaciente( vector<Paciente>& pacientes,  vector<Cidade>& cida
                 }
             }
         }
-    } while(cidadeAux.codigo == 0 && opcao != 0);
+    } while(cidadeAux.codigo == 0 && opcao == 0);
 
     return paciente;
 }
@@ -469,7 +469,7 @@ void excluirPaciente(vector<Paciente>& pacientes) {
     for(int i = 0; i < pacientes.size(); i++) {
         if(strcmp(pacientes[i].cpf, cpf) == 0) {
             pacientes.erase(pacientes.begin() + i);
-            i = pacientes.size();
+            i = (int)pacientes.size();
         }
     }
 
@@ -478,10 +478,10 @@ void excluirPaciente(vector<Paciente>& pacientes) {
 //Atividade 5
 Consulta incluirNovaConsulta( vector<Paciente>& pacientes,  vector<Cidade>& cidades,  vector<Medico>& medicos, vector<Especialidade>& especialidades,  vector<CID>& cids, vector<Medicamento>& medicamentos) {
     Consulta consulta{};
-    Paciente pacienteAux{};
-    Medico medicoAux{ 0, "", 0, "", "", 0};
-    CID cidAux{ "", ""};
-    Medicamento medicamentoAux{ 0, "", 0, 0, 0, 0};
+    Paciente pacienteAux = { "", "", "", 0 };
+    Medico medicoAux = { 0, "", 0, "", "", 0};
+    CID cidAux = { "","" };
+    Medicamento medicamentoAux = { 0, "", 0, 0, 0, 0.08};
 
     int opcao = 0;
 
@@ -498,11 +498,13 @@ Consulta incluirNovaConsulta( vector<Paciente>& pacientes,  vector<Cidade>& cida
     cout << endl;
     do{
         cout << "Informe o CPF do paciente: " << endl;
+        cout << "\t[>]";
         gets(consulta.cpf_paciente);
         pacienteAux = buscarPaciente(pacientes, consulta.cpf_paciente);
         if(strcmp(pacienteAux.cpf, "") == 0) {
             cout << "!CPF nao encontrado!" << endl;
-            cout << "Deseja cadastrar um novo paciente?? [1 - Sim | 0 - Nao]: " << endl;
+            cout << "\nDeseja cadastrar um novo paciente?? [1 - Sim | 0 - Nao]: " << endl;
+            cout << "\t [>]";
             cin >> opcao;
             cin.ignore();
             if(opcao == 1) {
@@ -520,7 +522,7 @@ Consulta incluirNovaConsulta( vector<Paciente>& pacientes,  vector<Cidade>& cida
                 cout << endl;
             }
         }
-    } while(strcmp(pacienteAux.cpf, "") == 0 && opcao != 0);
+    } while(strcmp(pacienteAux.cpf, "") == 0 && opcao == 0);
 
     opcao = 0;
 
@@ -537,12 +539,14 @@ Consulta incluirNovaConsulta( vector<Paciente>& pacientes,  vector<Cidade>& cida
     cout << endl;
     do{
         cout << "Informe o codigo do medico: " << endl;
+        cout << "[>]";
         cin >> consulta.codigo_medico;
         cin.ignore();
         medicoAux = buscarMedico(medicos, consulta.codigo_medico);
         if(medicoAux.codigo == 0) {
             cout << "!Medico nao encontrado!" << endl;
             cout << "Deseja cadastrar um novo medico?? [1 - Sim | 0 - Nao]: " << endl;
+            cout << "[>]";
             cin >> opcao;
             cin.ignore();
             if(opcao == 1) {
@@ -560,15 +564,17 @@ Consulta incluirNovaConsulta( vector<Paciente>& pacientes,  vector<Cidade>& cida
                 cout << endl;
             }
         }
-    } while(medicoAux.codigo == 0 && opcao != 0);
+    } while(medicoAux.codigo == 0 && opcao == 0);
 
     opcao = 0;
 
     system("cls");
-    cout << "Informe a data da consulta: " << endl;
+    cout << "Informe a data da consulta: " <<"\t exemplo = [??/??/????]" <<endl;
+    cout << "=>";
     gets(consulta.data);
     system("cls");
-    cout << "Informe a hora da consulta: " << endl;
+    cout << "Informe a hora da consulta: " << "\t exemplo = [??:??]"<< endl;
+    cout << "=>";
     gets(consulta.hora);
     system("cls");
     cout << "Diagnosticos disponiveis: " << endl;
@@ -582,7 +588,7 @@ Consulta incluirNovaConsulta( vector<Paciente>& pacientes,  vector<Cidade>& cida
         cidAux = buscarCid(cids, consulta.codigo_cid);
         if(strcmp(cidAux.codigo, "") == 0) {
             cout << "!Diagnostico nao encontrado!" << endl;
-            cout << "Deseja cadastrar um novo diagnostico?? [1 - Sim | 0 - Nao]: " << endl;
+            cout << "\nDeseja cadastrar um novo diagnostico?? [1 - Sim | 0 - Nao]: " << endl;
             cin >> opcao;
             cin.ignore();
             if(opcao == 1) {
@@ -595,7 +601,7 @@ Consulta incluirNovaConsulta( vector<Paciente>& pacientes,  vector<Cidade>& cida
                 cout << endl;
             }
         }
-    } while(strcmp(cidAux.codigo, "") == 0 && opcao != 0);
+    } while(strcmp(cidAux.codigo, "") == 0 && opcao == 0);
 
     opcao = 0;
 
@@ -612,7 +618,7 @@ Consulta incluirNovaConsulta( vector<Paciente>& pacientes,  vector<Cidade>& cida
         medicamentoAux = buscarMedicamento(medicamentos, consulta.codigo_medicamento);
         if(medicamentoAux.codigo == 0) {
             cout << "!Medicamento nao encontrado!" << endl;
-            cout << "Deseja cadastrar um novo medicamento?? [1 - Sim | 0 - Nao]: " << endl;
+            cout << "\nDeseja cadastrar um novo medicamento?? [1 - Sim | 0 - Nao]: " << endl;
             cin >> opcao;
             cin.ignore();
             if(opcao == 1) {
@@ -628,7 +634,7 @@ Consulta incluirNovaConsulta( vector<Paciente>& pacientes,  vector<Cidade>& cida
         if(medicamentoAux.qtd_estoque == 0) {
             cout << "!Medicamento sem estoque!" << endl;
         }
-    } while(medicamentoAux.codigo == 0 && medicamentoAux.qtd_estoque == 0 && opcao != 0);
+    } while(medicamentoAux.codigo == 0 && medicamentoAux.qtd_estoque == 0 && opcao == 0);
 
     system("cls");
     cout << "Informacoes do medicamento: " << endl;
@@ -671,7 +677,7 @@ void consultaMedicamentos( vector<Medicamento>& medicamentos) {
 
 void consultarDetalhesMedicamento(vector<Medicamento>& medicamentos){
     int codigo, opcao;
-    Medicamento medicamentoAux{ 0, "", 0, 0, 0, 0};
+    Medicamento medicamentoAux = { 0, "", 0, 0, 0, 0.0};
     do{
         system("cls");
         cout << "Medicamentos: " << endl;
@@ -686,11 +692,16 @@ void consultarDetalhesMedicamento(vector<Medicamento>& medicamentos){
             medicamentoAux = buscarMedicamento(medicamentos, codigo);
             if(medicamentoAux.codigo == 0) {
                 cout << "!Medicamento nao encontrado!" << endl;
-                cout << "Deseja cadastrar um novo medicamento?? [1 - Sim | 0 - Nao]: " << endl;
+                cout << "\nDeseja cadastrar um novo medicamento?? [1 - Sim | 0 - Nao]: " << endl;
                 cin >> opcao;
                 cin.ignore();
                 if(opcao == 1) {
                     medicamentos.push_back(leituraDadosMedicamentos(medicamentos));
+                    system("cls");
+                    cout << "Medicamentos: " << endl;
+                    for(const auto & medicamento : medicamentos) {
+                        cout << "\t[" << medicamento.codigo << "] - " << medicamento.descricao << endl;
+                    }
                 }
             }
         } while(medicamentoAux.codigo == 0);
@@ -711,7 +722,7 @@ void consultarDetalhesMedicamento(vector<Medicamento>& medicamentos){
 //Atividade 7
 void consultarMedicamentosEstoqueMinimo( vector<Medicamento>& medicamentos){
     int codigo, opcao;
-    Medicamento medicamentoAux{ 0, "", 0, 0, 0, 0};
+    Medicamento medicamentoAux = { 0, "", 0, 0, 0, 0.0};
 
     do{
         system("cls");
@@ -781,7 +792,6 @@ Cidade buscarCidade( vector<Cidade>& cidades, int codigo) {
     }
     return cidadeAux;
 }
-
 Especialidade buscarEspecialidade(vector<Especialidade> especialidades, int codigo) {
     Especialidade especialidadeAux{ 0, ""};
     for(int i = 0; i < especialidades.size(); i++) {
@@ -792,7 +802,6 @@ Especialidade buscarEspecialidade(vector<Especialidade> especialidades, int codi
     }
     return especialidadeAux;
 }
-
 Medicamento buscarMedicamento(vector<Medicamento> medicamentos, int codigo) {
     Medicamento medicamentoAux{ 0, "", 0, 0, 0, 0};
     for(int i = 0; i < medicamentos.size(); i++) {
@@ -803,7 +812,6 @@ Medicamento buscarMedicamento(vector<Medicamento> medicamentos, int codigo) {
     }
     return medicamentoAux;
 }
-
 CID buscarCid(vector<CID> cids, char codigo[]) {
     CID cidAux{ "", ""};
     for(int i = 0; i < cids.size(); i++) {
@@ -814,7 +822,6 @@ CID buscarCid(vector<CID> cids, char codigo[]) {
     }
     return cidAux;
 }
-
 Medico buscarMedico(vector<Medico> medicos, int codigo) {
     Medico medicoAux{ 0, "", 0, "", "", 0};
     for(int i = 0; i < medicos.size(); i++) {
@@ -825,7 +832,6 @@ Medico buscarMedico(vector<Medico> medicos, int codigo) {
     }
     return medicoAux;
 }
-
 Paciente buscarPaciente(vector<Paciente> pacientes, char cpf[]) {
     Paciente pacienteAux{ "", "", "", 0};
     for(int i = 0; i < pacientes.size(); i++) {
