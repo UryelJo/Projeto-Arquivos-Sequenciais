@@ -63,6 +63,15 @@ Paciente buscarPaciente(vector<Paciente>, char[]);
 void textoInicial();
 void textoFinal();
 
+void seletorExibirDados(vector<Cidade>&, vector<Especialidade>&, vector<Medico>&, vector<Paciente>&, vector<CID>&, vector<Medicamento>&, vector<Consulta>&);
+void exibirCidadesCadastradas(vector<Cidade>&);
+void exibirEspecialidadesCadastradas(vector<Especialidade>&);
+void exibirMedicosCadastrados(vector<Medico>&, vector<Especialidade>&, vector<Cidade>&);
+void exibirPacientesCadastrados(vector<Paciente>&, vector<Cidade>&);
+void exibirCidsCadastradas(vector<CID>&);
+void exibirMedicamentosCadastrados(vector<Medicamento>&);
+void exibirConsultasCadastradas(vector<Consulta>&, vector<Paciente>&, vector<Cidade>&, vector<Medico>&, vector<Especialidade>&, vector<CID>&, vector<Medicamento>&);
+
 //Prototipação de métodos de leitura de dados
 Cidade leituraDadosCidades( vector<Cidade>&);
 Especialidade leituraDadosEspecialidades( vector<Especialidade>&);
@@ -74,6 +83,7 @@ Medico incluirNovoMedico( vector<Medico>&,  vector<Especialidade>&,  vector<Cida
 Paciente incluirNovoPaciente( vector<Paciente>&,  vector<Cidade>&);
 Consulta incluirNovaConsulta( vector<Paciente>&, vector<Cidade>&,  vector<Medico>&, vector<Especialidade>&,  vector<CID>&, vector<Medicamento>&);
 
+//Prototipação dos métodos de exibição de dados
 void consultaMedicamentos( vector<Medicamento>&);
 void consultarDetalhesMedicamento( vector<Medicamento>&);
 void consultarMedicamentosEstoqueMinimo( vector<Medicamento>&);
@@ -84,6 +94,7 @@ void excluirPaciente( vector<Paciente>&);
 
 int main() {
     int opcao = 0;
+    int opcaoAux = 0;
     setlocale(LC_ALL, "Portuguese");
     textoInicial();
         vector<Cidade> cidades = {
@@ -141,28 +152,43 @@ int main() {
 
     cout<< endl;
     do{
-        cout<<"\t\nInforme a opcao desejada{ \n" << "\t[1] - Cadastrar uma nova cidade \n" << "\t[2] - Cadastrar uma nova especialidade \n" << "\t[3] - Cadastrar uma nova doenca \n"<< "\t[4] - Cadastrar um novo medicamento \n"<< "\t[5] - Incluir novo Medico \n"<< "\t[6] - Incluir um novo Paciente \n"<< "\t[7] - Excluir um Paciente \n"<< "\t[8] - Agendar uma Consulta \n"<< "\t[9] - Consultar Medicamento \n"<< "\t[10] - Valores arrecadados com consultas \n"<< "\n\t[0] - Finalizar \n} " << endl;
+        cout <<"\t\nInforme a opcao desejada{ \n" << "\t[1] - Exibir dados \n" << "\t[2] - Cadastrar dados \n" <<   "\t[3] - Incluir novo Medico \n"<< "\t[4] - Incluir um novo Paciente \n"<< "\t[5] - Excluir um Paciente \n"<< "\t[6] - Agendar uma Consulta \n"<< "\t[7] - Consultar Medicamento \n"<< "\t[8] - Valores arrecadados com consultas \n"<< "\n\t[0] - Finalizar \n} " << endl;
+        cout << "[>] ";
         cin >> opcao;
         cin.ignore();
         if(opcao == 1) {
-            cidades.push_back(leituraDadosCidades(cidades));
+            seletorExibirDados(cidades, especialidades, medicos, pacientes, cids, medicamentos, consultas);
         } else if(opcao == 2) {
-            especialidades.push_back(leituraDadosEspecialidades(especialidades));
+            system("cls");
+            cout << "\t\n Informe o que deseja cadastrar{ \n" << "\t[1] - Cidade \n" << "\t[2] - Especialidade \n" << "\t[3] - Medico \n"<< "\t[4] - Paciente \n"<< "\t[5] - Diagnostico \n"<< "\t[6] - Medicamento \n"<< "\n\t[0] - Voltar \n} " << endl;
+            cout << "[>] ";
+            cin >> opcaoAux;
+            cin.ignore();
+            if(opcaoAux == 1) {
+                cidades.push_back(leituraDadosCidades(cidades));
+            } else if(opcaoAux == 2) {
+                especialidades.push_back(leituraDadosEspecialidades(especialidades));
+            } else if(opcaoAux == 3) {
+                medicos.push_back(incluirNovoMedico(medicos, especialidades, cidades));
+            } else if(opcaoAux == 4) {
+                pacientes.push_back(incluirNovoPaciente(pacientes, cidades));
+            } else if(opcaoAux == 5) {
+                cids.push_back(leituraDadosCid(cids));
+            } else if(opcaoAux == 6) {
+                medicamentos.push_back(leituraDadosMedicamentos(medicamentos));
+            }
+            system("cls");
         } else if(opcao == 3) {
-            cids.push_back(leituraDadosCid(cids));
-        } else if(opcao == 4) {
-            medicamentos.push_back(leituraDadosMedicamentos(medicamentos));
-        } else if(opcao == 5) {
             medicos.push_back(incluirNovoMedico(medicos, especialidades, cidades));
-        } else if(opcao == 6) {
+        } else if(opcao == 4) {
             pacientes.push_back(incluirNovoPaciente(pacientes, cidades));
-        } else if(opcao == 7) {
+        } else if(opcao == 5) {
             excluirPaciente(pacientes);
-        } else if(opcao == 8) {
+        } else if(opcao == 6) {
             consultas.push_back(incluirNovaConsulta( pacientes, cidades, medicos,especialidades, cids, medicamentos));
-        } else if(opcao == 9) {
+        } else if(opcao == 7) {
             consultaMedicamentos(medicamentos);
-        } else if(opcao == 10) {
+        } else if(opcao == 8) {
             consultarGanhosComConsultas(consultas, medicamentos);
         }
         system("cls");
@@ -202,16 +228,152 @@ void textoFinal(){
     }
 }
 
+void seletorExibirDados(vector<Cidade>& cidades, vector<Especialidade>& especialidades, vector<Medico>& medicos, vector<Paciente>& pacientes, vector<CID>& cids, vector<Medicamento>& medicamentos, vector<Consulta>& consultas) {
+    system("cls");
+    int opcao = 0;
+    do{
+        cout<<"\t\nInforme o que deseja consultar{ \n" << "\t[1] - Cidades Cadastradas \n" << "\t[2] - Especialidades Cadastradas \n" << "\t[3] - Medicos Cadastrados \n"<< "\t[4] - Pacientes Cadastrados \n"<< "\t[5] - Diagnosticos Cadastradas \n"<< "\t[6] - Medicamentos Cadastrados \n"<< "\t[7] - Consultas Cadastradas \n"<< "\n\t[0] - Voltar \n} " << endl;
+        cout << "[>] ";
+        cin >> opcao;
+        cin.ignore();
+        if(opcao == 1) {
+            exibirCidadesCadastradas(cidades);
+        } else if(opcao == 2) {
+            exibirEspecialidadesCadastradas(especialidades);
+        } else if(opcao == 3) {
+            exibirMedicosCadastrados(medicos, especialidades, cidades);
+        } else if(opcao == 4) {
+            exibirPacientesCadastrados(pacientes, cidades);
+        } else if(opcao == 5) {
+            exibirCidsCadastradas(cids);
+        } else if(opcao == 6) {
+            exibirMedicamentosCadastrados(medicamentos);
+        } else if(opcao == 7) {
+            exibirConsultasCadastradas(consultas, pacientes, cidades, medicos, especialidades, cids, medicamentos);
+        }
+        system("cls");
+    }while(opcao != 0);
+}
+
+void exibirCidadesCadastradas(vector<Cidade>& cidades) {
+    system("cls");
+    cout << "Cidades cadastradas: " << endl;
+    for(const auto & cidade : cidades) {
+        cout << "\t[" << cidade.codigo << "] - " << cidade.nome << " - " << cidade.estado << endl;
+    }
+    system("pause");
+}
+void exibirEspecialidadesCadastradas(vector<Especialidade>& especialidades) {
+    system("cls");
+    cout << "Especialidades cadastradas: " << endl;
+    for(const auto & especialidade : especialidades) {
+        cout << "\t[" << especialidade.codigo << "] - " << especialidade.descricao << endl;
+    }
+    system("pause");
+}
+void exibirMedicosCadastrados(vector<Medico>& medicos, vector<Especialidade>& especialidades, vector<Cidade>& cidades) {
+    system("cls");
+    cout << "Medicos cadastrados: " << endl;
+    for(const auto & medico : medicos) {
+        cout << "\t[" << medico.codigo << "] - " << medico.nome << " - " << medico.telefone << " - " << medico.endereco;
+        for(const auto & especialidade : especialidades) {
+            if(especialidade.codigo == medico.codigo_especialidade) {
+                cout << "\t\tEspecialidade: [" << especialidade.descricao << "]";
+            }
+        }
+        for(const auto & cidade : cidades) {
+            if(cidade.codigo == medico.codigo_cidade) {
+                cout << "\t\tCidade: [" << cidade.nome << " - " << cidade.estado << "]" << endl;
+            }
+        }
+    }
+    system("pause");
+}
+void exibirPacientesCadastrados(vector<Paciente>& pacientes, vector<Cidade>& cidades) {
+    system("cls");
+    cout << "Pacientes cadastrados: " << endl;
+    for(const auto & paciente : pacientes) {
+        cout << "\t[" << paciente.cpf << "] - " << paciente.nome << " - " << paciente.endereco;
+        for(const auto & cidade : cidades) {
+            if(cidade.codigo == paciente.codigo_cidade) {
+                cout << "\t\tCidade: [" << cidade.nome << " - " << cidade.estado << "]" << endl;
+            }
+        }
+    }
+    system("pause");
+}
+void exibirCidsCadastradas(vector<CID>& cids) {
+    system("cls");
+    cout << "Diagnosticos cadastrados: " << endl;
+    for(const auto & cid : cids) {
+        cout << "\t[" << cid.codigo << "] - " << cid.descricao << endl;
+    }
+    system("pause");
+}
+void exibirMedicamentosCadastrados(vector<Medicamento>& medicamentos) {
+    system("cls");
+    cout << "Medicamentos cadastrados: " << endl;
+    for(const auto & medicamento : medicamentos) {
+        cout << "\t[" << medicamento.codigo << "] - " << medicamento.descricao << " - " << medicamento.qtd_estoque << " - " << medicamento.preco << endl;
+    }
+    system("pause");
+}
+void exibirConsultasCadastradas(vector<Consulta>& consultas, vector<Paciente>& pacientes, vector<Cidade>& cidades, vector<Medico>& medicos, vector<Especialidade>& especialidades, vector<CID>& cids, vector<Medicamento>& medicamentos) {
+    system("cls");
+    cout << "Consultas cadastradas: " << endl;
+    for(const auto & consulta : consultas) {
+        cout << "\n\t[" << consulta.cpf_paciente << "] - " << consulta.data << " - " << consulta.hora << endl;
+        for(const auto & paciente : pacientes) {
+            if(strcmp(paciente.cpf, consulta.cpf_paciente) == 0) {
+                cout << "\t\tPaciente: [" << paciente.nome << "]";
+                for(const auto & cidade : cidades) {
+                    if(cidade.codigo == paciente.codigo_cidade) {
+                        cout << "\t\tCidade: [" << cidade.nome << " - " << cidade.estado << "]" << endl;
+                    }
+                }
+            }
+        }
+        for(const auto & medico : medicos) {
+            if(medico.codigo == consulta.codigo_medico) {
+                cout << "\t\tMedico: [" << medico.nome << "]";
+                for(const auto & especialidade : especialidades) {
+                    if(especialidade.codigo == medico.codigo_especialidade) {
+                        cout << "\t\tEspecialidade: [" << especialidade.descricao << "]";
+                    }
+                }
+                for(const auto & cidade : cidades) {
+                    if(cidade.codigo == medico.codigo_cidade) {
+                        cout << "\t\tCidade: [" << cidade.nome << " - " << cidade.estado << "]" << endl;
+                    }
+                }
+            }
+        }
+        for(const auto & cid : cids) {
+            if(strcmp(cid.codigo, consulta.codigo_cid) == 0) {
+                cout << "\t\tDiagnostico: [" << cid.descricao << "]" << endl;
+            }
+        }
+        for(const auto & medicamento : medicamentos) {
+            if(medicamento.codigo == consulta.codigo_medicamento) {
+                cout << "\t\tMedicamento: [" << medicamento.descricao << "] - " << consulta.qtd_medicamento << " unidades" <<endl;
+            }
+        }
+    }
+    system("pause");
+}
+
 //Questão 1
 Cidade leituraDadosCidades( vector<Cidade>& cidades) {
     Cidade cidade{};
     Cidade cidadeAux = { 0, "", ""};
     system("cls");
     cout << "Informe o nome da cidade: " << endl;
+    cout << "\t[>] ";
     gets(cidade.nome);
     system("cls");
     do {
         cout << "Informe o codigo da cidade [" << cidade.nome << "]: " << endl;
+        cout << "\t[>] ";
         cin >> cidade.codigo;
         cin.ignore();
         cidadeAux = buscarCidade(cidades, cidade.codigo);
@@ -222,6 +384,7 @@ Cidade leituraDadosCidades( vector<Cidade>& cidades) {
     } while(cidadeAux.codigo != 0);
     system("cls");
     cout << "Informe o estado da cidade: " << endl;
+    cout << "\t[>] ";
     gets(cidade.estado);
 
     return cidade;
@@ -231,10 +394,12 @@ Especialidade leituraDadosEspecialidades( vector<Especialidade>& especialidades)
     Especialidade especialidadeAux = { 0, ""};
     system("cls");
     cout << "Informe a descricao da especialidade: " << endl;
+    cout << "\t[>] ";
     gets(especialidade.descricao);
     do {
         system("cls");
         cout << "Informe o codigo da especialidade [" << especialidade.descricao << "]: " << endl;
+        cout << "\t[>] ";
         cin >> especialidade.codigo;
         cin.ignore();
         especialidadeAux = buscarEspecialidade(especialidades, especialidade.codigo);
@@ -251,10 +416,12 @@ Medicamento leituraDadosMedicamentos( vector<Medicamento>& medicamentos) {
     int quantidadeEstoque = 0;
     system("cls");
     cout << "Informe a descricao do medicamento: " << endl;
+    cout << "\t[>] ";
     gets(medicamento.descricao);
     system("cls");
     do {
         cout << "Informe o codigo do medicamento [" << medicamento.descricao << "]: " << endl;
+        cout << "\t[>] ";
         cin >> medicamento.codigo;
         cin.ignore();
         medicamentoAux = buscarMedicamento(medicamentos, medicamento.codigo);
@@ -266,11 +433,13 @@ Medicamento leituraDadosMedicamentos( vector<Medicamento>& medicamentos) {
 
     system("cls");
     cout << "Informe o estoque minimo do medicamento [" << medicamento.descricao << "]: " << endl;
+    cout << "\t[>] ";
     cin >> medicamento.estoque_minimo;
     cin.ignore();
     system("cls");
     do{
         cout << "Informe o estoque maximo do medicamento [" << medicamento.descricao << "]: " << endl;
+        cout << "\t[>] ";
         cin >> medicamento.estoque_maximo;
         cin.ignore();
         if(medicamento.estoque_minimo > medicamento.estoque_maximo) {
@@ -281,6 +450,7 @@ Medicamento leituraDadosMedicamentos( vector<Medicamento>& medicamentos) {
     system("cls");
     do{
         cout << "Informe a quantidade em estoque do medicamento [" << medicamento.descricao << "]: " << endl;
+        cout << "\t[>] ";
         cin >> quantidadeEstoque;
         cin.ignore();
         if(quantidadeEstoque < medicamento.estoque_minimo || quantidadeEstoque > medicamento.estoque_maximo) {
@@ -290,6 +460,7 @@ Medicamento leituraDadosMedicamentos( vector<Medicamento>& medicamentos) {
     } while(quantidadeEstoque < medicamento.estoque_minimo || quantidadeEstoque > medicamento.estoque_maximo);
     system("cls");
     cout << "Informe o preco do medicamento [" << medicamento.descricao << "]: " << endl;
+    cout << "\t[>] ";
     cin >> medicamento.preco;
     cin.ignore();
     return medicamento;
@@ -299,10 +470,12 @@ CID leituraDadosCid( vector<CID>& cids) {
     CID cidAux = { "",""};
     system("cls");
     cout << "Informe a descricao da CID: " << endl;
+    cout << "\t[>] ";
     gets(cid.descricao);
     system("cls");
     do {
         cout << "Informe o codigo da CID [" << cid.descricao << "]: " << endl;
+        cout << "\t[>] ";
         gets(cid.codigo);
         cidAux = buscarCid(cids, cid.codigo);
         if(strcmp(cidAux.codigo, "") != 0) {
@@ -324,10 +497,12 @@ Medico incluirNovoMedico(vector<Medico>& medicos,  vector<Especialidade>& especi
 
     system("cls");
     cout << "Informe o nome do medico: " << endl;
+    cout << "\t[>] ";
     gets(medico.nome);
     system("cls");
     do {
         cout << "Informe o codigo do medico [" << medico.nome << "]: " << endl;
+        cout << "\t[>] ";
         cin >> medico.codigo;
         cin.ignore();
         medicoAux = buscarMedico(medicos, medico.codigo);
@@ -339,9 +514,11 @@ Medico incluirNovoMedico(vector<Medico>& medicos,  vector<Especialidade>& especi
 
     system("cls");
     cout << "Informe o endereco do medico [" << medico.nome << "]: " << endl;
+    cout << "\t[>] ";
     gets(medico.endereco);
     system("cls");
     cout << "Informe o telefone do medico [" << medico.nome << "]: " << endl;
+    cout << "\t[>] ";
     gets(medico.telefone);
 
     system("cls");
@@ -351,12 +528,14 @@ Medico incluirNovoMedico(vector<Medico>& medicos,  vector<Especialidade>& especi
     }
     do{
         cout << "\nInforme o codigo da especialidade do medico [" << medico.nome << "]: " << endl;
+        cout << "\t[>] ";
         cin >> medico.codigo_especialidade;
         cin.ignore();
         especialidadeAux = buscarEspecialidade(especialidades, medico.codigo_especialidade);
         if(especialidadeAux.codigo == 0) {
             cout << "!Especialidade nao encontrada!" << endl;
             cout << "\nDeseja cadastrar uma nova especialidade?? [1 - Sim | 0 - Nao]: " << endl;
+            cout << "\t[>] ";
             cin >> opcao;
             cin.ignore();
             if(opcao == 1) {
@@ -378,12 +557,14 @@ Medico incluirNovoMedico(vector<Medico>& medicos,  vector<Especialidade>& especi
     }
     do{
         cout << "Informe o codigo da cidade do medico [" << medico.nome << "]: " << endl;
+        cout << "\t[>] ";
         cin >> medico.codigo_cidade;
         cin.ignore();
         cidadeAux = buscarCidade(cidades, medico.codigo_cidade);
         if(cidadeAux.codigo == 0) {
             cout << "!Cidade nao encontrada!" << endl;
             cout << "\nDeseja cadastrar uma nova cidade?? [1 - Sim | 0 - Nao]: " << endl;
+            cout << "\t[>] ";
             cin >> opcao;
             cin.ignore();
             if(opcao == 1) {
@@ -410,10 +591,12 @@ Paciente incluirNovoPaciente( vector<Paciente>& pacientes,  vector<Cidade>& cida
 
     system("cls");
     cout << "Informe o nome do paciente: " << endl;
+    cout << "\t[>] ";
     gets(paciente.nome);
     system("cls");
     do {
         cout << "Informe o cpf do paciente [" << paciente.nome << "]: " << endl;
+        cout << "\t[>] ";
         gets(paciente.cpf);
         pacienteAux = buscarPaciente(pacientes, paciente.cpf);
         if(strcmp(pacienteAux.cpf, "") != 0) {
@@ -424,6 +607,7 @@ Paciente incluirNovoPaciente( vector<Paciente>& pacientes,  vector<Cidade>& cida
 
     system("cls");
     cout << "Informe o endereco do paciente [" << paciente.nome << "]: " << endl;
+    cout << "\t[>] ";
     gets(paciente.endereco);
 
     system("cls");
@@ -433,12 +617,14 @@ Paciente incluirNovoPaciente( vector<Paciente>& pacientes,  vector<Cidade>& cida
     }
     do{
         cout << "Informe o codigo da cidade do paciente [" << paciente.nome << "]: " << endl;
+        cout << "\t[>] ";
         cin >> paciente.codigo_cidade;
         cin.ignore();
         cidadeAux = buscarCidade(cidades, paciente.codigo_cidade);
         if(cidadeAux.codigo == 0) {
             cout << "!Cidade nao encontrada!" << endl;
             cout << "\nDeseja cadastrar uma nova cidade?? [1 - Sim | 0 - Nao]: " << endl;
+            cout << "\t[>] ";
             cin >> opcao;
             cin.ignore();
             if(opcao == 1) {
@@ -464,6 +650,7 @@ void excluirPaciente(vector<Paciente>& pacientes) {
         cout << "\t[" << paciente.cpf << "] - " << paciente.nome << endl;
     }
     cout << "Informe o CPF do paciente que deseja excluir: " << endl;
+    cout << "\t[>] ";
     gets(cpf);
 
     for(int i = 0; i < pacientes.size(); i++) {
@@ -539,14 +726,14 @@ Consulta incluirNovaConsulta( vector<Paciente>& pacientes,  vector<Cidade>& cida
     cout << endl;
     do{
         cout << "Informe o codigo do medico: " << endl;
-        cout << "[>]";
+        cout << "\t[>] ";
         cin >> consulta.codigo_medico;
         cin.ignore();
         medicoAux = buscarMedico(medicos, consulta.codigo_medico);
         if(medicoAux.codigo == 0) {
             cout << "!Medico nao encontrado!" << endl;
             cout << "Deseja cadastrar um novo medico?? [1 - Sim | 0 - Nao]: " << endl;
-            cout << "[>]";
+            cout << "\t[>] ";
             cin >> opcao;
             cin.ignore();
             if(opcao == 1) {
@@ -569,12 +756,12 @@ Consulta incluirNovaConsulta( vector<Paciente>& pacientes,  vector<Cidade>& cida
     opcao = 0;
 
     system("cls");
-    cout << "Informe a data da consulta: " <<"\t exemplo = [??/??/????]" <<endl;
-    cout << "=>";
+    cout << "Informe a data da consulta: " <<"\t exemplo = [--/--/----]" <<endl;
+    cout << "\t[>] ";
     gets(consulta.data);
     system("cls");
-    cout << "Informe a hora da consulta: " << "\t exemplo = [??:??]"<< endl;
-    cout << "=>";
+    cout << "Informe a hora da consulta: " << "\t exemplo = [--:--]"<< endl;
+    cout << "\t[>] ";
     gets(consulta.hora);
     system("cls");
     cout << "Diagnosticos disponiveis: " << endl;
@@ -584,11 +771,13 @@ Consulta incluirNovaConsulta( vector<Paciente>& pacientes,  vector<Cidade>& cida
     cout << endl;
     do{
         cout << "Informe o codigo do diagnostico: " << endl;
+        cout << "\t[>] ";
         gets(consulta.codigo_cid);
         cidAux = buscarCid(cids, consulta.codigo_cid);
         if(strcmp(cidAux.codigo, "") == 0) {
             cout << "!Diagnostico nao encontrado!" << endl;
             cout << "\nDeseja cadastrar um novo diagnostico?? [1 - Sim | 0 - Nao]: " << endl;
+            cout << "\t[>] ";
             cin >> opcao;
             cin.ignore();
             if(opcao == 1) {
@@ -613,12 +802,14 @@ Consulta incluirNovaConsulta( vector<Paciente>& pacientes,  vector<Cidade>& cida
     cout << endl;
     do{
         cout << "Informe o codigo do medicamento: " << endl;
+        cout << "\t[>] ";
         cin >> consulta.codigo_medicamento;
         cin.ignore();
         medicamentoAux = buscarMedicamento(medicamentos, consulta.codigo_medicamento);
         if(medicamentoAux.codigo == 0) {
             cout << "!Medicamento nao encontrado!" << endl;
             cout << "\nDeseja cadastrar um novo medicamento?? [1 - Sim | 0 - Nao]: " << endl;
+            cout << "\t[>] ";
             cin >> opcao;
             cin.ignore();
             if(opcao == 1) {
@@ -645,6 +836,7 @@ Consulta incluirNovaConsulta( vector<Paciente>& pacientes,  vector<Cidade>& cida
     cout << endl;
     do{
         cout << "Informe a quantidade do medicamento: " << endl;
+        cout << "\t[>] ";
         cin >> consulta.qtd_medicamento;
         cin.ignore();
         if(consulta.qtd_medicamento > medicamentoAux.qtd_estoque) {
@@ -663,6 +855,7 @@ void consultaMedicamentos( vector<Medicamento>& medicamentos) {
     do {
         cout << "\t\nInforme a opcao desejada{ \n" << "\t[1] - Consultar Detalhes de um Medicamento \n"
              << "\t[2] - Consultar Medicamentos com estoque baixo \n" << "\n\t[0] - Voltar \n} " << endl;
+        cout << "\t[>] ";
         cin >> opcao;
         cin.ignore();
         if (opcao == 1) {
@@ -687,12 +880,14 @@ void consultarDetalhesMedicamento(vector<Medicamento>& medicamentos){
         cout << endl;
         do{
             cout << "Informe o codigo do medicamento: " << endl;
+            cout << "\t[>] ";
             cin >> codigo;
             cin.ignore();
             medicamentoAux = buscarMedicamento(medicamentos, codigo);
             if(medicamentoAux.codigo == 0) {
                 cout << "!Medicamento nao encontrado!" << endl;
                 cout << "\nDeseja cadastrar um novo medicamento?? [1 - Sim | 0 - Nao]: " << endl;
+                cout << "\t[>] ";
                 cin >> opcao;
                 cin.ignore();
                 if(opcao == 1) {
@@ -715,6 +910,7 @@ void consultarDetalhesMedicamento(vector<Medicamento>& medicamentos){
         cout << "\tEstoque maximo: " << medicamentoAux.estoque_maximo << endl;
         cout << "\tValor total em estoque: " << (float)((float)medicamentoAux.qtd_estoque * medicamentoAux.preco) << endl;
         cout << "\nDeseja consultar outro medicamento? [1 - Sim | 0 - Nao]: " << endl;
+        cout << "\t[>] ";
         cin >> opcao;
     } while (opcao != 0);
 }
@@ -735,6 +931,7 @@ void consultarMedicamentosEstoqueMinimo( vector<Medicamento>& medicamentos){
         cout << endl;
         do{
             cout << "Informe o codigo do medicamento para consultar detalhes: " << endl;
+            cout << "\t[>] ";
             cin >> codigo;
             cin.ignore();
             medicamentoAux = buscarMedicamento(medicamentos, codigo);
@@ -754,6 +951,7 @@ void consultarMedicamentosEstoqueMinimo( vector<Medicamento>& medicamentos){
         cout << "\n\t Quantidade a ser comprada: " << (medicamentoAux.estoque_maximo - medicamentoAux.qtd_estoque) << endl;
         cout << "\t Valor total a ser comprado: " << (float)((float)(medicamentoAux.estoque_maximo - medicamentoAux.qtd_estoque) * medicamentoAux.preco) << endl;
         cout << "\nDeseja consultar outro medicamento? [1 - Sim | 0 - Nao]: " << endl;
+        cout << "\t[>] ";
         cin >> opcao;
         cin.ignore();
     } while (opcao != 0);
@@ -763,7 +961,6 @@ void consultarMedicamentosEstoqueMinimo( vector<Medicamento>& medicamentos){
 void consultarGanhosComConsultas( vector<Consulta>& consultas,  vector<Medicamento>& medicamentos) {
     float totalConsultas = 0;
     float totalMedicamentos = 0;
-    char voltar[999];
     for(const auto & consulta : consultas) {
         totalConsultas += 100;
         for(const auto & medicamento : medicamentos) {
@@ -777,9 +974,7 @@ void consultarGanhosComConsultas( vector<Consulta>& consultas,  vector<Medicamen
     cout << "\tTotal arrecadado com consultas: " << totalConsultas << endl;
     cout << "\tTotal arrecadado com medicamentos: " << totalMedicamentos << endl;
     cout << "\tTotal arrecadado: " << (totalConsultas + totalMedicamentos) << endl;
-
-    cout << "\nPressione qualquer tecla para voltar ao menu principal" << endl;
-    gets(voltar);
+    system("pause");
 }
 
 Cidade buscarCidade( vector<Cidade>& cidades, int codigo) {
